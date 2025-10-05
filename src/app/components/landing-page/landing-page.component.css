@@ -1,0 +1,53 @@
+.landing-page{
+  position: fixed;
+  inset: 0; /* full-bleed container */
+  display: flex;
+  align-items: center; /* vertical centering */
+  justify-content: center; /* horizontal centering */
+  background: black;
+}
+
+.hero{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem; /* breathing room on small screens */
+  color: white;
+}
+
+.hero-inner  {
+  /* constrained content box */
+  width: min(720px, 92vw);
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem;
+  box-sizing: border-box;
+  border-radius: 8px;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  text-align: center;
+}
+
+.hero .lead {
+  margin: 0;
+  color: #444;
+  text-align: center; 
+}
+
+.hero-actions {
+  /* push actions to the bottom of the hero-inner while keeping flow */
+  display: flex;
+  justify-content: center;
+  margin-top: auto; /* takes remaining space so button sits at bottom */
+}
+
+/* Keep the button visually separated on small heights */
+.hero-actions .btn {
+  align-self: center;
+}
