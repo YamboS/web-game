@@ -49,15 +49,18 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   showInput = true;
   showCharacterIntroductions = false;
   showMonologue = false;
-  inbaseRoom = false;
-  inManagerOffice = false;
-  inDineRoom = false;
-  inJanitorCloset = false;
-  inLivingRoom = false;
+  currentRoom: string = 'landing';
   showModal = false;
   modalHeader = '';
   modalBody = '';
   userInput: string = '';
+
+  private roomDescriptions: Record<string, string> = {
+    base: "You're in the main office area.",
+    manager_office: "You're in the manager's office. Look around for clues.",
+    dining_room: "You're in the break room. Look around for clues.",
+    janitor_closet: "You're in the janitor's closet. Look around for clues."
+  };
 
   // Listen for Enter key to progress dialogue
 
@@ -77,27 +80,41 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   hoveredArea: string | null = null;
 
   onAreaClick(areaId: string, event: Event) {
-    event.preventDefault();
+  event.preventDefault();
 
-    const area = GameArea.getArea(areaId);    
-    if (area) {            
-      if (this.inJanitorCloset) {
-        this.modalHeader = 'Computer Password Required';
-        this.modalBody ='The computer is asking for a password, the hint says my favorite place in the office.';
-        this.showModal = true;
-        this.showInput = true;
-      }
-      else if (this.inDineRoom && areaId == 'vending_machine'){
-        this.modalHeader = 'Vending Machine';
-        this.modalBody ="The vending machine is full of snacks!";
-        this.showModal = true;
-      }
+  const area = GameArea.getArea(areaId);      
+  if (area) {            
+    if (this.currentRoom === 'janitor_closet') {
+      this.modalHeader = 'Computer Password Required';
+      this.modalBody ='The computer is asking for a password, the hint says my favorite place in the office.';
+      this.showModal = true;
+      this.showInput = true;
+    }
+    else if (area?.title === 'Vending Machine'){
+      this.showInput = false;
+      this.modalHeader = 'Vending Machine';
+      this.modalBody = "The vending machine is full of snacks!";
+      this.showModal = true;
+    }
+    else if (area?.title === 'Lunch Table'){
+      this.showInput = false;
+      this.modalHeader = 'Somebody left the lunch table a mess';
+      this.modalBody = "The vending machine is full of snacks!";
+      this.showModal = true;
+    }
+    else if (area?.title === 'Meeting Board'){
+      this.showInput = false;
+      this.modalHeader = "Confidential: How to Unlock the door";
+      this.modalBody = "The door requires a 6 alphanumeric digits code to unlock. The first two can be found in the break room, the next in the"
+      +" the second two are in my office, and the last one is in the Janitor's closet if I ever forget since there is no resetting the code, Good Luck Me!";
+      this.showModal = true;
     }
   }
+}
 
   getAreaText(): string {
     if (this.hoveredArea) {
-      const area = GameArea.getArea(this.hoveredArea);
+      const area = GameArea.getArea(this.hoveredArea);      
       if (area) {
         return area.description;
       }
@@ -121,7 +138,7 @@ export class LandingPageComponent implements OnInit, OnDestroy {
     } else {
       this.dialog = '';
       this.showMonologue = false;
-      this.inbaseRoom = true;
+      this.currentRoom = 'base';
       this.showAlert = true;
       setTimeout(() => {
         this.showAlert = false;
@@ -130,39 +147,12 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   }
 
   investigateSpecificArea(location?: string) {
-    switch (location) {
-      case 'manager_office':
-        this.inManagerOffice = true;
-        this.inbaseRoom = false;
-        this.currentAreaText =
-          "You're in the manager's office. Look around for clues.";
-        break;
-      case 'dining_room':
-        this.inDineRoom = true;
-        this.inbaseRoom = false;
-        this.inManagerOffice = false;
-        this.currentAreaText =
-          "You're in the break room. Look around for clues.";
-        break;
-      case 'janitor_closet':
-        this.inJanitorCloset = true;
-        this.inbaseRoom = false;
-        this.inManagerOffice = false;
-        this.inDineRoom = false;
-        this.currentAreaText =
-          "You're in the janitor's closet. Look around for clues.";
-        break;
-      default:
-        this.inbaseRoom = true;
-        this.inManagerOffice = false;
-        this.inDineRoom = false;
-    }
+    this.currentRoom = location || 'base';
+    this.currentAreaText = this.roomDescriptions[this.currentRoom];
   }
   
   submitPassword(): void {
-    if (this.userInput.toLowerCase() === 'break room') {
-      this.modalHeader = "Password Accepted";
-      
+    if (this.userInput.toLowerCase() === 'break room') {            
       this.modalHeader = "Welcome Janitor";
       this.modalBody =
       "Cleaning schedule started. All the other doors in the building are now unlocked.";

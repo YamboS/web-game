@@ -22,7 +22,7 @@
 </div>
 
 <!-- Main office area -->
-<div *ngIf="inbaseRoom" class="main-office-area d-flex align-items-center justify-content-center">
+<div *ngIf="currentRoom === 'base'" class="main-office-area d-flex align-items-center justify-content-center">
   <div class="container">
     <div class="row justify-content-center gx-4 align-items-center" style="min-height: calc(100vh - 0px);">
     
@@ -30,7 +30,7 @@
       <div *ngIf="officeroomUnlocked" class="card" style="width: 18rem;">
         <div class="card-body text-center">
           <h5 class="card-title">Manager's Office</h5>
-          <p class="card-text">Looks like they accidentally left the door unlocked.</p>
+          <p class="card-text">There is definitely some Information on how to get out in there.</p>
           <button (click)="investigateSpecificArea('manager_office')" class="btn btn-primary">Enter Manager's Office</button>
         </div>
       </div>
@@ -60,7 +60,7 @@
 </div>
 
 <!-- Manager office view -->
-<div *ngIf="inManagerOffice && officeroomUnlocked" class="manager-office-area position-relative">
+<div *ngIf="currentRoom === 'manager_office' && officeroomUnlocked" class="manager-office-area position-relative">
   <i class="back-button bi bi-arrow-left-circle" (click)="investigateSpecificArea()"></i>
   <!-- SVG overlay for clickable areas -->
   <svg class="position-absolute w-100 h-100">
@@ -103,7 +103,7 @@
 </div>
   
 <!-- Break room view -->
-<div *ngIf="inDineRoom && breakroomUnlocked" class="break-room-area position-relative">
+<div *ngIf="currentRoom === 'dining_room' && breakroomUnlocked" class="break-room-area position-relative">
   <i class="back-button bi bi-arrow-left-circle" (click)="investigateSpecificArea()"></i>
   <!-- SVG overlay for clickable areas -->
   <svg class="position-absolute w-100 h-100">
@@ -146,7 +146,7 @@
 </div>
 
 <!-- Janitor closet view -->
-<div *ngIf="inJanitorCloset" class="janitors-area position-relative">
+<div *ngIf="currentRoom === 'janitor_closet'" class="janitors-area position-relative">
   <i class="back-button bi bi-arrow-left-circle" (click)="investigateSpecificArea()"></i>
   <!-- SVG overlay for clickable areas -->
   <svg class="position-absolute w-100 h-100">
@@ -154,8 +154,8 @@
     <g style="pointer-events:all; cursor:pointer;" (click)="onAreaClick('computer', $event)">
       <rect x= "52%" y= "29%" width= "23%" height= "44%"
             style="fill:transparent; stroke:none;"
-            [class.highlight]="hoveredArea === 'key_hook'"
-            (mouseenter)="hoveredArea = 'key_hook'"
+            [class.highlight]="hoveredArea == 'computer'"
+            (mouseenter)="hoveredArea = 'computer'"
             (mouseleave)="hoveredArea = null">        
       </rect>
     </g>  
@@ -165,8 +165,7 @@
   <div class="card position-absolute start-50 translate-middle-x" style="width: 40rem; top: 72vh; z-index: 10;">
     <div class="card-body">
       <h5 class="card-title">Janitor Closet</h5>
-      <p class="card-text">{{getAreaText()}}</p>
-      {{showModal}}
+      <p class="card-text">{{getAreaText()}}</p>      
     </div>
   </div>
 </div>
