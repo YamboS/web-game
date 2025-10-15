@@ -1,57 +1,182 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { GameService } from 'src/app/services/game.service';
 import { trigger, style, animate, transition } from '@angular/animations';
+import { GameArea } from 'src/app/models/game-model';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-landing-page',
   templateUrl: './landing-page.component.html',
-  styleUrls: ['./landing-page.component.css']
-  ,
+  styleUrls: ['./landing-page.component.css'],
   animations: [
-    trigger('fade', [    
-      transition(':leave', [
-        animate('300ms ease-in', style({ opacity: 0 }))
-      ])
-    ])
-  ]
+    trigger('fade', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('300ms ease-out', style({ opacity: 1 })),
+      ]),
+      transition(':leave', [animate('300ms ease-in', style({ opacity: 0 }))]),
+    ]),
+    trigger('fade-in', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('600ms ease-out', style({ opacity: 1 })),
+      ]),
+      transition(':leave', [animate('400ms ease-in', style({ opacity: 0 }))]),
+    ]),
+  ],
 })
-export class LandingPageComponent implements OnInit {
-  
+export class LandingPageComponent implements OnInit, OnDestroy {
+  // Track currently hovered area for UI feedback
+  currentAreaText: string =
+    "You're in the manager's office. Look around for clues.";
   onLandingPage = true;
   rotatedDialog = false;
-  dialog:string = '';
+  showAlert = false;
+  breakroomUnlocked = false;
+  officeroomUnlocked = false;
+  pageIndex = 0;
+  dialog: string = '';
   textList: string[] = [
-    "You wake up in a dark room, the air thick with dust and the faint smell of mold. Your head throbs as you try to remember how you got here.",
-    "As your eyes adjust to the dim light, you notice a door slightly ajar on the far side of the room. A sliver of light seeps through the crack, casting eerie shadows on the walls.",
-    "You stand up, your legs shaky but determined. You approach the door cautiously, your heart pounding in your chest. Pushing it open, you step into a narrow hallway lined with old portraits whose eyes seem to follow your every move.",
-    "At the end of the hallway, you find another door, this one locked tight. Frustration wells up inside you as you realize you're trapped. But then, you notice a small key hanging from a nail beside the door.",
-    "With trembling hands, you take the key and unlock the door, stepping into a grand library filled with towering bookshelves and a roaring fireplace. A sense of relief washes over you as you realize you're not alone in this strange place.",
-    "Suddenly, a shadowy figure emerges from the darkness, its eyes glowing with an otherworldly light. 'Welcome,' it says in a voice that sends chills down your spine. 'Your journey has just begun.'"
+    'You are an employee at Ford',
+    'Corporate villain Barry Mara, has locked you in the office ' +
+      'because the vehicle launch was a complete disaster',
+    "and you're not leaving till it's fixed",
+    'but you have other plans',
+    "It's time to escape!",
   ];
-  
-  ngOnInit(): void {}
-  
-  ngOnDestroy(): void {}
-  
-  constructor(private gameService: GameService) { }
 
-startGame(): void {
-  this.onLandingPage = false;
-  console.log("Starting game...");
-  
-  let index = 0;
-  this.dialog = this.textList[0]; // Show first text immediately
-  
-  const intervalId = setInterval(() => {
-    index++;
-    if (index < this.textList.length) {
-      this.dialog = this.textList[index];
-    } else {
-      clearInterval(intervalId); // Stop when done
-      this.dialog = "";
+  showInput = true;
+  showCharacterIntroductions = false;
+  showMonologue = false;
+  inbaseRoom = false;
+  inManagerOffice = false;
+  inDineRoom = false;
+  inJanitorCloset = false;
+  inLivingRoom = false;
+  showModal = false;
+  modalHeader = '';
+  modalBody = '';
+  userInput: string = '';
+
+  // Listen for Enter key to progress dialogue
+
+  @HostListener('document:keydown.enter', ['$event'])
+  handleEnterKey(event: KeyboardEvent) {
+    if (!this.onLandingPage) {
+      this.nextPage();
     }
-  }, 3000);
+  }
+
+  ngOnInit(): void {}
+
+  ngOnDestroy(): void {}
+
+  constructor(private gameService: GameService) {}
+
+  hoveredArea: string | null = null;
+
+  onAreaClick(areaId: string, event: Event) {
+    event.preventDefault();
+
+    const area = GameArea.getArea(areaId);    
+    if (area) {            
+      if (this.inJanitorCloset) {
+        this.modalHeader = 'Computer Password Required';
+        this.modalBody ='The computer is asking for a password, the hint says my favorite place in the office.';
+        this.showModal = true;
+        this.showInput = true;
+      }
+      else if (this.inDineRoom && areaId == 'vending_machine'){
+        this.modalHeader = 'Vending Machine';
+        this.modalBody ="The vending machine is full of snacks!";
+        this.showModal = true;
+      }
+    }
+  }
+
+  getAreaText(): string {
+    if (this.hoveredArea) {
+      const area = GameArea.getArea(this.hoveredArea);
+      if (area) {
+        return area.description;
+      }
+    }
+    return this.currentAreaText;
+  }
+
+  startGame(): void {
+    this.onLandingPage = false;
+    this.pageIndex = 0;
+    this.dialog = this.textList[0]; // Show first text immediately
+    this.showMonologue = true;
+  }
+
+  nextPage(): void {
+    if (this.pageIndex < this.textList.length - 1) {
+      this.pageIndex++;
+      this.dialog = this.textList[this.pageIndex];
+    } else if (this.showModal) {
+      return;
+    } else {
+      this.dialog = '';
+      this.showMonologue = false;
+      this.inbaseRoom = true;
+      this.showAlert = true;
+      setTimeout(() => {
+        this.showAlert = false;
+      }, 5000); // Show alert after 5 seconds
+    }
+  }
+
+  investigateSpecificArea(location?: string) {
+    switch (location) {
+      case 'manager_office':
+        this.inManagerOffice = true;
+        this.inbaseRoom = false;
+        this.currentAreaText =
+          "You're in the manager's office. Look around for clues.";
+        break;
+      case 'dining_room':
+        this.inDineRoom = true;
+        this.inbaseRoom = false;
+        this.inManagerOffice = false;
+        this.currentAreaText =
+          "You're in the break room. Look around for clues.";
+        break;
+      case 'janitor_closet':
+        this.inJanitorCloset = true;
+        this.inbaseRoom = false;
+        this.inManagerOffice = false;
+        this.inDineRoom = false;
+        this.currentAreaText =
+          "You're in the janitor's closet. Look around for clues.";
+        break;
+      default:
+        this.inbaseRoom = true;
+        this.inManagerOffice = false;
+        this.inDineRoom = false;
+    }
+  }
   
-  this.rotatedDialog = true;  
-}  
+  submitPassword(): void {
+    if (this.userInput.toLowerCase() === 'break room') {
+      this.modalHeader = "Password Accepted";
+      
+      this.modalHeader = "Welcome Janitor";
+      this.modalBody =
+      "Cleaning schedule started. All the other doors in the building are now unlocked.";
+      this.showInput = false;
+
+      this.breakroomUnlocked = true;
+      this.officeroomUnlocked = true;
+    } else {
+      this.modalHeader = 'Incorrect password. Try again.';
+    }
+  }
+
+  closeModal(){
+    this.showModal = false;
+    this.userInput = '';
+  }
 }

@@ -2,26 +2,188 @@
 <div class="landing-page" *ngIf="onLandingPage" @fade>
   <div class="hero">
     <div class="hero-inner">
-      <h1>Sam's Game</h1>
-      <p class="lead">A text based mystery game.</p>
+      <h1>Office Escape Room</h1>      <p class="lead">Escape this corporate nightmare.</p>
       <div class="hero-actions">
-        <button
-          type="button"
-          class="btn btn-primary btn-lg px-4 gap-3"
-          (click)="startGame()"
-        >
-          Primary button
+        <button type="button" class="btn btn-primary btn-lg px-4 gap-3" (click)="startGame()">
+          Start the path to freedom!
         </button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Start next page -->
-<div class="row mb-3 text-center" @fade>
+<!-- Intro monologue -->
+<div *ngIf="showMonologue" class=" main-office-area row mb-3 text-center" (keydown.enter)="nextPage()">
   <div class="col-4 themed-grid-col"></div>
   <div class="col-4 themed-grid-col">
-    <p style="margin-top: 40vh;">{{ dialog }}</p>
+    <p class="overlay-text">{{ dialog }}</p>
   </div>
   <div class="col-4 themed-grid-col"></div>
 </div>
+
+<!-- Main office area -->
+<div *ngIf="inbaseRoom" class="main-office-area d-flex align-items-center justify-content-center">
+  <div class="container">
+    <div class="row justify-content-center gx-4 align-items-center" style="min-height: calc(100vh - 0px);">
+    
+      <div class="col-12 col-sm-6 col-md-4 d-flex justify-content-center">
+      <div *ngIf="officeroomUnlocked" class="card" style="width: 18rem;">
+        <div class="card-body text-center">
+          <h5 class="card-title">Manager's Office</h5>
+          <p class="card-text">Looks like they accidentally left the door unlocked.</p>
+          <button (click)="investigateSpecificArea('manager_office')" class="btn btn-primary">Enter Manager's Office</button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="breakroomUnlocked" class="col-12 col-sm-6 col-md-4 d-flex justify-content-center">
+      <div class="card" style="width: 18rem;">
+        <div class="card-body text-center">
+          <h5 class="card-title">Lunch Room</h5>
+          <p class="card-text">A place where people gathered. Maybe someone left a clue behind.</p>
+          <button (click)="investigateSpecificArea('dining_room')" class="btn btn-primary">Enter Lunch Room</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-md-4 d-flex justify-content-center">
+      <div class="card" style="width: 18rem;">
+        <div class="card-body text-center">
+          <h5 class="card-title">Janitor Closet</h5>
+          <p class="card-text">Small and easy to miss — could hold hidden items.</p>
+          <button (click)="investigateSpecificArea('janitor_closet')" class="btn btn-primary">Open Closet</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- Manager office view -->
+<div *ngIf="inManagerOffice && officeroomUnlocked" class="manager-office-area position-relative">
+  <i class="back-button bi bi-arrow-left-circle" (click)="investigateSpecificArea()"></i>
+  <!-- SVG overlay for clickable areas -->
+  <svg class="position-absolute w-100 h-100">
+    <!-- Board area - preserveAspectRatio ensures SVG scales with container -->
+    <g style="pointer-events:all; cursor:pointer;" (click)="onAreaClick('board', $event)">
+       <rect x="13%" y="18%" width="12.4%" height="21.8%"
+            style="fill:transparent; stroke:none;"
+            [class.highlight]="hoveredArea === 'board'"
+            (mouseenter)="hoveredArea = 'board'"
+            (mouseleave)="hoveredArea = null">        
+      </rect>
+    </g>
+    <!-- Papers area -->
+    <g style="pointer-events:all; cursor:pointer;" (click)="onAreaClick('papers', $event)">
+      <rect  x = "7%" y = "55.4%" width = "15.9%" height="6.2%"
+            style="fill:transparent; stroke:none;"
+            [class.highlight]="hoveredArea === 'papers'"
+            (mouseenter)="hoveredArea = 'papers'"
+            (mouseleave)="hoveredArea = null">        
+      </rect>
+    </g>
+    <!-- Calendar area -->
+    <g style="pointer-events:all; cursor:pointer;" (click)="onAreaClick('calendar', $event)">
+      <circle cx="67.5%" cy="62%" r="4.2%"
+              style="fill:transparent; stroke:none;"
+              [class.highlight]="hoveredArea === 'calendar'"
+              (mouseenter)="hoveredArea = 'calendar'"
+              (mouseleave)="hoveredArea = null">        
+      </circle>
+    </g>
+  </svg>
+
+  <!-- Dialog card overlay -->
+  <div class="card position-absolute start-50 translate-middle-x" style="width: 40rem; top: 72vh; z-index: 10;">
+    <div class="card-body">
+      <h5 class="card-title">Manager's Office</h5>
+      <p class="card-text">{{getAreaText()}}</p>      
+    </div>
+  </div>
+</div>
+  
+<!-- Break room view -->
+<div *ngIf="inDineRoom && breakroomUnlocked" class="break-room-area position-relative">
+  <i class="back-button bi bi-arrow-left-circle" (click)="investigateSpecificArea()"></i>
+  <!-- SVG overlay for clickable areas -->
+  <svg class="position-absolute w-100 h-100">
+    <!-- Table area -->
+    <g style="pointer-events:all; cursor:pointer;" (click)="onAreaClick('lunch_table', $event)">
+      <rect x = "38%" y = "53%" width = "33%" height = "20%"
+            style="fill:transparent; stroke:none;"
+            [class.highlight]="hoveredArea === 'lunch_table'"
+            (mouseenter)="hoveredArea = 'lunch_table'"
+            (mouseleave)="hoveredArea = null">        
+      </rect>
+    </g>
+    <!-- Vending Machine area -->    
+    <g style="pointer-events:all; cursor:pointer;" (click)="onAreaClick('vending_machine', $event)">
+      <rect x= "13%" y= "12%" width= "21%" height= "55%"
+            style="fill:transparent; stroke:none;"
+            [class.highlight]="hoveredArea === 'vending_machine'"
+            (mouseenter)="hoveredArea = 'vending_machine'"
+            (mouseleave)="hoveredArea = null">        
+      </rect>
+    </g>
+    <!-- Coffee area -->     
+    <g style="pointer-events:all; cursor:pointer;" (click)="onAreaClick('notice_board', $event)">
+      <rect x= "76%" y= "40%" width= "12%" height= "23%"
+            style="fill:transparent; stroke:none;"
+            [class.highlight]="hoveredArea === 'notice_board'"
+            (mouseenter)="hoveredArea = 'notice_board'"
+            (mouseleave)="hoveredArea = null">        
+      </rect>
+    </g>
+  </svg>
+
+  <!-- Dialog card overlay -->
+  <div class="card position-absolute start-50 translate-middle-x" style="width: 40rem; top: 72vh; z-index: 10;">
+    <div class="card-body">
+      <h5 class="card-title">Lunch Room</h5>
+      <p class="card-text">{{getAreaText()}}</p>
+    </div>
+  </div>
+</div>
+
+<!-- Janitor closet view -->
+<div *ngIf="inJanitorCloset" class="janitors-area position-relative">
+  <i class="back-button bi bi-arrow-left-circle" (click)="investigateSpecificArea()"></i>
+  <!-- SVG overlay for clickable areas -->
+  <svg class="position-absolute w-100 h-100">
+    <!-- Computer area -->  
+    <g style="pointer-events:all; cursor:pointer;" (click)="onAreaClick('computer', $event)">
+      <rect x= "52%" y= "29%" width= "23%" height= "44%"
+            style="fill:transparent; stroke:none;"
+            [class.highlight]="hoveredArea === 'key_hook'"
+            (mouseenter)="hoveredArea = 'key_hook'"
+            (mouseleave)="hoveredArea = null">        
+      </rect>
+    </g>  
+  </svg>
+
+  <!-- Dialog card overlay -->
+  <div class="card position-absolute start-50 translate-middle-x" style="width: 40rem; top: 72vh; z-index: 10;">
+    <div class="card-body">
+      <h5 class="card-title">Janitor Closet</h5>
+      <p class="card-text">{{getAreaText()}}</p>
+      {{showModal}}
+    </div>
+  </div>
+</div>
+
+  <!-- Modal Overlay -->
+  <div *ngIf="showModal" class="modal-overlay">
+    <div class="modal-content">
+      <i class="bi bi-x-lg exit-icon p-2" (click)="closeModal()" ></i>       
+      <div class="modal-header">
+        <h5 class="modal-title">{{modalHeader}}</h5>      
+      </div>
+      <div class="modal-body">
+        {{modalBody}}  
+      </div>
+       <div *ngIf="showInput" class="modal-footer p-3">        
+        <input type="text" [(ngModel)]="userInput" placeholder="Enter password here" class="form-control"/>
+        <button class="btn btn-primary mt-2" (click)="submitPassword()">Submit</button>     
+      </div>
+    </div>
+  </div>
