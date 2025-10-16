@@ -30,7 +30,7 @@
       <div *ngIf="officeroomUnlocked" class="card" style="width: 18rem;">
         <div class="card-body text-center">
           <h5 class="card-title">Manager's Office</h5>
-          <p class="card-text">There is definitely some Information on how to get out in there.</p>
+          <p class="card-text">Our manager's office.... So much for being a "team"</p>
           <button (click)="investigateSpecificArea('manager_office')" class="btn btn-primary">Enter Manager's Office</button>
         </div>
       </div>
@@ -40,7 +40,7 @@
       <div class="card" style="width: 18rem;">
         <div class="card-body text-center">
           <h5 class="card-title">Lunch Room</h5>
-          <p class="card-text">A place where people gathered. Maybe someone left a clue behind.</p>
+          <p class="card-text">Finally a place to get some food, I'm f*ckinn stavin ova here.</p>
           <button (click)="investigateSpecificArea('dining_room')" class="btn btn-primary">Enter Lunch Room</button>
         </div>
       </div>
@@ -50,7 +50,7 @@
       <div class="card" style="width: 18rem;">
         <div class="card-body text-center">
           <h5 class="card-title">Janitor Closet</h5>
-          <p class="card-text">Small and easy to miss — could hold hidden items.</p>
+          <p class="card-text">The only room unlocked besides the bathroom.</p>
           <button (click)="investigateSpecificArea('janitor_closet')" class="btn btn-primary">Open Closet</button>
         </div>
       </div>
@@ -174,15 +174,32 @@
   <div *ngIf="showModal" class="modal-overlay">
     <div class="modal-content">
       <i class="bi bi-x-lg exit-icon p-2" (click)="closeModal()" ></i>       
-      <div class="modal-header">
-        <h5 class="modal-title">{{modalHeader}}</h5>      
-      </div>
-      <div class="modal-body">
-        {{modalBody}}  
-      </div>
-       <div *ngIf="showInput" class="modal-footer p-3">        
-        <input type="text" [(ngModel)]="userInput" placeholder="Enter password here" class="form-control"/>
-        <button class="btn btn-primary mt-2" (click)="submitPassword()">Submit</button>     
-      </div>
+      <section *ngIf="!showSpecialMessage">
+        <div class="modal-header">
+          <h5 class="modal-title">{{modalHeader}}</h5>      
+        </div>
+        <div class="modal-body">
+          {{modalBody}}  
+        </div>
+        <div *ngIf="showInput" class="modal-footer p-3">        
+          <input type="text" [(ngModel)]="userInput" placeholder="Enter password here" class="form-control"/>
+          <button class="btn btn-primary mt-2" (click)="submitPassword()">Submit</button>     
+        </div>
+      </section>
+      <section *ngIf="showSpecialMessage">
+        <div class="modal-header">
+          <h5 class="modal-title" style="color: red; font-weight:700;">!!!CONFIDENTIAL:DO NOT POST IN A PUBLIC PLACE!!!</h5>      
+        </div>
+        <div class="modal-body">
+          In order to get out in lockdown mode I need to enter the password I set to unlock the door.
+          Here are the locations of the 3 clues for that password in-case I forget since the password can't be reset:
+          <ul>
+            <li>The first two can be found in the break room</li>
+            <li>the second two are in my office</li>
+            <li>the last one is in the Janitor's closet if I ever forget since there is no resetting the code</li>
+          </ul>
+          <p>Good Luck Me</p>
+        </div>      
+      </section>
     </div>
   </div>

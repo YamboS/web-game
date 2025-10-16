@@ -1,9 +1,6 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
-import { GameService } from 'src/app/services/game.service';
 import { trigger, style, animate, transition } from '@angular/animations';
 import { GameArea } from 'src/app/models/game-model';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-landing-page',
@@ -39,8 +36,8 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   dialog: string = '';
   textList: string[] = [
     'You are an employee at Ford',
-    'Corporate villain Barry Mara, has locked you in the office ' +
-      'because the vehicle launch was a complete disaster',
+    'Your manager, Fim Jarley, has locked you in the office ' +
+    'because the vehicle launch was a complete disaster',
     "and you're not leaving till it's fixed",
     'but you have other plans',
     "It's time to escape!",
@@ -54,6 +51,8 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   modalHeader = '';
   modalBody = '';
   userInput: string = '';
+  showSpecialMessage=false;
+  turnOffNextPage: boolean = false;
 
   private roomDescriptions: Record<string, string> = {
     base: "You're in the main office area.",
@@ -75,7 +74,7 @@ export class LandingPageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {}
 
-  constructor(private gameService: GameService) {}
+  constructor() {}
 
   hoveredArea: string | null = null;
 
@@ -83,6 +82,8 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   event.preventDefault();
 
   const area = GameArea.getArea(areaId);      
+  this.showSpecialMessage=false;
+  this.showInput = false;  
   if (area) {            
     if (this.currentRoom === 'janitor_closet') {
       this.modalHeader = 'Computer Password Required';
@@ -90,25 +91,26 @@ export class LandingPageComponent implements OnInit, OnDestroy {
       this.showModal = true;
       this.showInput = true;
     }
-    else if (area?.title === 'Vending Machine'){
-      this.showInput = false;
+    else if (area?.title === 'Vending Machine'){      
       this.modalHeader = 'Vending Machine';
       this.modalBody = "The vending machine is full of snacks!";
       this.showModal = true;
     }
-    else if (area?.title === 'Lunch Table'){
-      this.showInput = false;
+    else if (area?.title === 'Lunch Table'){      
       this.modalHeader = 'Somebody left the lunch table a mess';
       this.modalBody = "The vending machine is full of snacks!";
       this.showModal = true;
     }
-    else if (area?.title === 'Meeting Board'){
-      this.showInput = false;
-      this.modalHeader = "Confidential: How to Unlock the door";
-      this.modalBody = "The door requires a 6 alphanumeric digits code to unlock. The first two can be found in the break room, the next in the"
-      +" the second two are in my office, and the last one is in the Janitor's closet if I ever forget since there is no resetting the code, Good Luck Me!";
+    else if (area?.title === 'Meeting Board'){      
+      this.showSpecialMessage = true;
       this.showModal = true;
     }
+    else if (area?.title === 'Scattered Papers'){      
+      this.showModal = true;
+      this.modalHeader = 'What I like to eat';
+      this.modalBody = "The vending machine is full of some god awful snacks anything with nuts or raisins are just the worst.";
+      
+    }    
   }
 }
 
@@ -133,16 +135,13 @@ export class LandingPageComponent implements OnInit, OnDestroy {
     if (this.pageIndex < this.textList.length - 1) {
       this.pageIndex++;
       this.dialog = this.textList[this.pageIndex];
-    } else if (this.showModal) {
+    } else if (this.turnOffNextPage) {
       return;
     } else {
       this.dialog = '';
       this.showMonologue = false;
       this.currentRoom = 'base';
-      this.showAlert = true;
-      setTimeout(() => {
-        this.showAlert = false;
-      }, 5000); // Show alert after 5 seconds
+      this.turnOffNextPage = true;
     }
   }
 

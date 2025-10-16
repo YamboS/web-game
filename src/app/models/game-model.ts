@@ -12,7 +12,7 @@ export class GameArea {
     },
     papers: {
       title: "Scattered Papers",
-      description: "Important documents are spread across the desk. They might contain useful information."
+      description: "Some documents are spread across the desk. They look important."
     },
     calendar: {
       title: "Desk Calendar",
