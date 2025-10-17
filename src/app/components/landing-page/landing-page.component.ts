@@ -48,11 +48,14 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   showMonologue = false;
   currentRoom: string = 'landing';
   showModal = false;
+  modalScreen: 'default' | 'password' | 'special' | 'clue' | string = 'default';
   modalHeader = '';
   modalBody = '';
+  modalImage?: string;
   userInput: string = '';
   showSpecialMessage=false;
   turnOffNextPage: boolean = false;
+  modalList: string[] = []    
 
   private roomDescriptions: Record<string, string> = {
     base: "You're in the main office area.",
@@ -84,33 +87,50 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   const area = GameArea.getArea(areaId);      
   this.showSpecialMessage=false;
   this.showInput = false;  
-  if (area) {            
-    if (this.currentRoom === 'janitor_closet') {
-      this.modalHeader = 'Computer Password Required';
-      this.modalBody ='The computer is asking for a password, the hint says my favorite place in the office.';
-      this.showModal = true;
-      this.showInput = true;
+  if (area) {
+    // Use a switch on the areaId so behavior is stable even if titles change
+    switch (areaId) {
+      case 'computer':
+        // In the janitor closet the computer prompts for a password        
+        this.modalScreen = 'password';
+        this.modalHeader = 'Computer Password Required';
+        this.modalBody = 'The computer is asking for an encoded password, the hint says my favorite place in the office.';
+        this.showModal = true;
+        this.showInput = true;    
+        break;
+      case 'vending_machine':
+        this.modalScreen = 'list';
+        this.modalHeader = 'Vending Machine';
+        this.modalList = ['42 - Nutty Buddy Crunch', '12 - Choco Bliss Bars', '47 - Raisin Rocket Bars', '45 - Caramel Craze Cubes', '23 - Candy Comet Drops', '51 - Peanut Powerhouse', '56 - Fruity Fizz Strips', '63 - Trail Mix Triumph'];
+        this.showModal = true;
+        break;
+      case 'lunch_table':
+        this.modalScreen = 'default';
+        this.modalHeader = 'Somebody left the lunch table a mess!';
+        this.modalBody = '';
+        this.showModal = true;
+        break;
+      case 'board':
+        // Special confidential board message
+        this.modalScreen = 'special';
+        this.showSpecialMessage = true;
+        this.showModal = true;
+        break;
+      case 'papers':
+        this.modalScreen = 'clue';
+        this.modalHeader = 'To:Vending Machine Supplier';
+        this.modalBody = "Tell Frank or whatever his name is to stop filling the machine with such god awful snacks." 
+        + " Sure some of them are good but who wants boring snacks with nuts or raisins? In an office!?!?!?!? It's boring enough here.";
+        this.showModal = true;
+        break;
+      default:
+        // Fallback: open modal with filler text for any unhandled area
+        this.modalScreen = 'default';
+        this.modalHeader = area.title || 'Area';
+        this.modalBody = area.description || 'Nothing special here yet.';
+        this.showModal = true;
+        break;
     }
-    else if (area?.title === 'Vending Machine'){      
-      this.modalHeader = 'Vending Machine';
-      this.modalBody = "The vending machine is full of snacks!";
-      this.showModal = true;
-    }
-    else if (area?.title === 'Lunch Table'){      
-      this.modalHeader = 'Somebody left the lunch table a mess';
-      this.modalBody = "The vending machine is full of snacks!";
-      this.showModal = true;
-    }
-    else if (area?.title === 'Meeting Board'){      
-      this.showSpecialMessage = true;
-      this.showModal = true;
-    }
-    else if (area?.title === 'Scattered Papers'){      
-      this.showModal = true;
-      this.modalHeader = 'What I like to eat';
-      this.modalBody = "The vending machine is full of some god awful snacks anything with nuts or raisins are just the worst.";
-      
-    }    
   }
 }
 
@@ -149,6 +169,12 @@ export class LandingPageComponent implements OnInit, OnDestroy {
     this.currentRoom = location || 'base';
     this.currentAreaText = this.roomDescriptions[this.currentRoom];
   }
+
+  attemptEscape() {
+    // Move player to final door view where they can try to open the exit
+    this.currentRoom = 'final_door';
+    this.currentAreaText = 'You are at the final door. Try to open it.';
+  }
   
   submitPassword(): void {
     if (this.userInput.toLowerCase() === 'break room') {            
@@ -167,5 +193,7 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   closeModal(){
     this.showModal = false;
     this.userInput = '';
+    this.modalScreen = 'default';
+    this.modalImage = undefined;
   }
 }

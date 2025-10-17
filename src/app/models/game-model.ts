@@ -43,7 +43,12 @@ export class GameArea {
     toolbox: {
       title: "Toolbox",
       description: "A red metal toolbox sits on the bottom shelf. It might contain something useful."
+    },
+    keypad: {
+      title: "Keypad",
+      description: "A numeric keypad with a small screen. It seems to be the final lock."
     }
+    
   };
 
   static getArea(areaId: string): AreaContent | undefined {

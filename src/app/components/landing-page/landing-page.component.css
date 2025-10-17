@@ -61,6 +61,53 @@
     1px 1px 0 #000, 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
+/* Terminal / old computer screen look */
+.terminal-card {
+  background: #041006; /* very dark green/near black */
+  color: #7CFC00; /* neon green text */
+  font-family: 'Courier New', Courier, monospace;
+  border: 2px solid rgba(124,252,0,0.12);
+  box-shadow: 0 0 24px rgba(124,252,0,0.08) inset, 0 8px 40px rgba(0,0,0,0.6);
+  text-shadow: 0 1px 0 rgba(0,0,0,0.6);
+}
+
+.terminal-card .card-body {
+  background: linear-gradient(180deg, rgba(4,16,6,0.95), rgba(4,16,6,0.9));
+  padding: 1.5rem;
+  min-height: 6rem;
+  color: #7CFC00;
+}
+
+/* Subtle scanline overlay to mimic CRT */
+.terminal-card::after {
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(0,0,0,0.02) 50%, rgba(255,255,255,0.01) 51%);
+  background-size: 100% 4px;
+  mix-blend-mode: overlay;
+}
+
+/* Slight text flicker animation */
+@keyframes terminal-flicker {
+  0% { opacity: 0.98; }
+  50% { opacity: 0.9; }
+  100% { opacity: 0.98; }
+}
+.terminal-card .card-body p,
+.terminal-card .card-body h5,
+.terminal-card .card-body .card-text {
+  animation: terminal-flicker 3s infinite ease-in-out;
+}
+
+/* Style modal body for terminal screens when showing clue/default/password */
+.modal-content.terminal-modal {
+  background: #031006;
+  color: #7CFC00;
+  border: 2px solid rgba(124,252,0,0.12);
+}
+
 .back-button {
   font-size: 4rem;
   top: 8px;
@@ -70,6 +117,22 @@
 
 .back-button:hover {
   cursor: pointer;
+}
+
+/* Escape icon in the base office view */
+.escape-icon {
+  position: fixed;
+  top: 16px;
+  right: 20px;
+  font-size: 2.2rem;
+  color: #fff;
+  z-index: 2000;
+  cursor: pointer;
+  opacity: 0.95;
+}
+.escape-icon:hover {
+  color: #ffd54f;
+  transform: scale(1.05);
 }
 
 .main-office-area {
@@ -95,6 +158,11 @@
   background: url(../../../assets/janitorCloset.png) center/cover no-repeat;
 }
 
+.final-door-area {
+  min-height: 100vh;
+  background: url(../../../assets/escapeRoom.png) center/cover no-repeat;
+}
+
 /* Modal Styles */
 .modal-overlay {
   position: fixed;
@@ -112,9 +180,12 @@
 .modal-content {
   background-color: white;
   border-radius: 8px;
-  width: 90%;
-  max-width: 500px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 95%;           /* increased from 90% */
+  max-width: 900px;     /* increased from 500px */
+  max-height: 85vh;     /* keep modal inside viewport */
+  overflow: auto;       /* allow scrolling when content is tall */
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  padding: 1rem;        /* optional: internal spacing */
 }
 
 .modal-header {

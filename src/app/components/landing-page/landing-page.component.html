@@ -23,6 +23,8 @@
 
 <!-- Main office area -->
 <div *ngIf="currentRoom === 'base'" class="main-office-area d-flex align-items-center justify-content-center">
+  <!-- Escape icon: appears once all rooms are unlocked -->
+  <i *ngIf="breakroomUnlocked && officeroomUnlocked" class="escape-icon bi bi-door-open" title="Escape" (click)="attemptEscape()"></i>
   <div class="container">
     <div class="row justify-content-center gx-4 align-items-center" style="min-height: calc(100vh - 0px);">
     
@@ -36,14 +38,14 @@
       </div>
     </div>
 
-    <div *ngIf="breakroomUnlocked" class="col-12 col-sm-6 col-md-4 d-flex justify-content-center">
+    <div *ngIf="breakroomUnlocked" class="col-12 col-sm-6 col-md-4 d-flex justify-content-center" style="display: block;">
       <div class="card" style="width: 18rem;">
         <div class="card-body text-center">
           <h5 class="card-title">Lunch Room</h5>
-          <p class="card-text">Finally a place to get some food, I'm f*ckinn stavin ova here.</p>
+          <p class="card-text">Finally a place to get some food.</p>
           <button (click)="investigateSpecificArea('dining_room')" class="btn btn-primary">Enter Lunch Room</button>
         </div>
-      </div>
+      </div>     
     </div>
 
     <div class="col-12 col-sm-6 col-md-4 d-flex justify-content-center">
@@ -170,36 +172,121 @@
   </div>
 </div>
 
+<!-- final room view -->
+<div *ngIf="currentRoom === 'final_door'" class=" final-door-area position-relative">
+  <i class="back-button bi bi-arrow-left-circle" (click)="investigateSpecificArea()"></i>
+  <!-- SVG overlay for clickable areas -->
+  <svg class="position-absolute w-100 h-100">
+    <!-- key-pad area -->
+    <g style="pointer-events:all; cursor:pointer;" (click)="onAreaClick('keypad', $event)">
+      <rect x= "52%" y= "29%" width= "23%" height= "44%"
+            style="fill:transparent; stroke:none;"
+            [class.highlight]="hoveredArea == 'keypad'"
+            (mouseenter)="hoveredArea = 'keypad'"
+            (mouseleave)="hoveredArea = null">        
+      </rect>
+    </g>  
+  </svg>
+
+  <!-- Dialog card overlay -->
+  <div class="card position-absolute start-50 translate-middle-x" style="width: 40rem; top: 72vh; z-index: 10;">
+    <div class="card-body">
+      <h5 class="card-title">Final Door</h5>
+      <p class="card-text">{{getAreaText()}}</p>      
+    </div>
+  </div>
+</div>
+
   <!-- Modal Overlay -->
   <div *ngIf="showModal" class="modal-overlay">
-    <div class="modal-content">
-      <i class="bi bi-x-lg exit-icon p-2" (click)="closeModal()" ></i>       
-      <section *ngIf="!showSpecialMessage">
-        <div class="modal-header">
-          <h5 class="modal-title">{{modalHeader}}</h5>      
-        </div>
-        <div class="modal-body">
-          {{modalBody}}  
-        </div>
-        <div *ngIf="showInput" class="modal-footer p-3">        
-          <input type="text" [(ngModel)]="userInput" placeholder="Enter password here" class="form-control"/>
-          <button class="btn btn-primary mt-2" (click)="submitPassword()">Submit</button>     
-        </div>
-      </section>
-      <section *ngIf="showSpecialMessage">
-        <div class="modal-header">
-          <h5 class="modal-title" style="color: red; font-weight:700;">!!!CONFIDENTIAL:DO NOT POST IN A PUBLIC PLACE!!!</h5>      
-        </div>
-        <div class="modal-body">
-          In order to get out in lockdown mode I need to enter the password I set to unlock the door.
-          Here are the locations of the 3 clues for that password in-case I forget since the password can't be reset:
-          <ul>
-            <li>The first two can be found in the break room</li>
-            <li>the second two are in my office</li>
-            <li>the last one is in the Janitor's closet if I ever forget since there is no resetting the code</li>
-          </ul>
-          <p>Good Luck Me</p>
-        </div>      
-      </section>
+    <div class="modal-content" [ngClass]="{'terminal-modal': modalScreen === 'password'}">
+      <i class="bi bi-x-lg exit-icon p-2" (click)="closeModal()"></i>
+
+      <!-- Choose which screen to render based on modalScreen -->
+      <div [ngSwitch]="modalScreen">
+        
+        <!-- Default simple message screen -->
+        <section *ngSwitchCase="'default'">
+          <div class="modal-header">
+            <h5 class="modal-title">{{modalHeader}}</h5>
+          </div>
+          <div class="modal-body">
+            {{modalBody}}
+          </div>
+        </section>
+
+        <!-- Password input screen -->
+        <section *ngSwitchCase="'password'">
+          <div class="modal-header">
+            <h5 class="modal-title">{{modalHeader}}</h5>
+          </div>
+          <div class="modal-body">
+            {{modalBody}}
+          </div>
+          <div *ngIf="showInput" class="modal-footer p-3">
+            <input type="text" [(ngModel)]="userInput" placeholder="Enter password here" class="form-control"/>
+            <button class="btn btn-primary mt-2" (click)="submitPassword()">Submit</button>
+          </div>
+        </section>
+
+        <!-- Special confidential message screen -->
+        <section *ngSwitchCase="'special'">
+          <div class="modal-header">
+            <h5 class="modal-title" style="color: red; font-weight:700;">
+              !!!CONFIDENTIAL:DO NOT POST IN A PUBLIC PLACE!!!
+            </h5>
+          </div>
+          <div class="modal-body">
+            In order to get out in lockdown mode I need to enter the password I set to unlock the door.
+            Here are the locations of the 3 clues for that password in-case I forget since the password can't be reset:
+            <ul>
+              <li>The first set of numbers can be found in the break room</li>
+              <li>the second set are in my office</li>
+              <li>the last set is in the Janitor's closet</li>
+            </ul>
+            <p>Let's not lock ourselves in again, Good Luck Me</p>
+          </div>
+        </section>
+
+        <!-- Clue screen (with optional image support) -->
+        <section *ngSwitchCase="'clue'">
+          <div class="modal-header">
+            <h5 class="modal-title">{{modalHeader}}</h5>
+          </div>
+          <div class="modal-body">
+            <img [src]="modalImage" alt="clue" class="img-fluid mb-3" *ngIf="modalImage"/>
+            <p>{{modalBody}}</p>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" (click)="closeModal()">Close</button>
+          </div>
+        </section>
+
+        <!-- List of items  -->
+        <section *ngSwitchCase="'list'">
+          <div class="modal-header">
+            <h5 class="modal-title">{{modalHeader}}</h5>
+          </div>
+          <div class="modal-body">
+            <ul>
+              <li *ngFor="let item of modalList">{{item}}</li>
+            </ul>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" (click)="closeModal()">Close</button>
+          </div>
+        </section>
+
+        <!-- Fallback for any unknown screen type -->
+        <section *ngSwitchDefault>
+          <div class="modal-header">
+            <h5 class="modal-title">{{modalHeader || 'Notice'}}</h5>
+          </div>
+          <div class="modal-body">
+            {{modalBody || 'No content available'}}
+          </div>
+        </section>
+
+      </div>
     </div>
   </div>
