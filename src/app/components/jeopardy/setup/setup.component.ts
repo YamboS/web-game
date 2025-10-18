@@ -15,21 +15,26 @@ export class SetupComponent {
 
   startGame() {
     this.svc.setTeamNames({ team1: this.team1 || 'Team 1', team2: this.team2 || 'Team 2' });
-    // Load template from assets (recommended path). If fetch fails, use a small inline fallback.
-    fetch('/assets/jeopardy/game-data.template.json')
+    // Load template from assets (recommended path). If fetch fails, try the component-local copy or fallback.
+    fetch('assets/jeopardy/game-data.template.json')
       .then((r) => r.json())
       .then((data) => {
         this.svc.loadGame(data);
         this.router.navigate(['/jeopardy/board']);
       })
       .catch(() => {
-        // inline minimal fallback in case asset serving isn't configured in dev environment
-        const fallback = {
-          gameTitle: 'Fallback Game',
-          categories: [],
-        } as any;
-        this.svc.loadGame(fallback);
-        this.router.navigate(['/jeopardy/board']);
+        // Try importing the local template within the component folder
+        import('../data/game-data.template.json')
+          .then((m: any) => {
+            this.svc.loadGame(m.default || m);
+            this.router.navigate(['/jeopardy/board']);
+          })
+          .catch(() => {
+            // inline minimal fallback if everything else fails
+            const fallback = { gameTitle: 'Fallback Game', categories: [] } as any;
+            this.svc.loadGame(fallback);
+            this.router.navigate(['/jeopardy/board']);
+          });
       });
   }
 }
