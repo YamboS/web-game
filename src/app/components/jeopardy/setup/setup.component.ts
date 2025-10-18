@@ -23,18 +23,10 @@ export class SetupComponent {
         this.router.navigate(['/jeopardy/board']);
       })
       .catch(() => {
-        // Try importing the local template within the component folder
-        import('../data/game-data.template.json')
-          .then((m: any) => {
-            this.svc.loadGame(m.default || m);
-            this.router.navigate(['/jeopardy/board']);
-          })
-          .catch(() => {
-            // inline minimal fallback if everything else fails
-            const fallback = { gameTitle: 'Fallback Game', categories: [] } as any;
-            this.svc.loadGame(fallback);
-            this.router.navigate(['/jeopardy/board']);
-          });
+        // inline minimal fallback if the asset fetch fails
+        const fallback = { gameTitle: 'Fallback Game', categories: [] } as any;
+        this.svc.loadGame(fallback);
+        this.router.navigate(['/jeopardy/board']);
       });
   }
 }
