@@ -1,0 +1,29 @@
+.jeopardy-screen{
+	background:#0b2d88; /* deep Jeopardy blue */
+	min-height: 100vh; /* fill full viewport to avoid white strip */
+	width: 100%;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	color: #fff;
+	padding: 18px;
+	box-sizing: border-box;
+}
+
+.jeopardy-inner{ max-width: 1000px; text-align:center }
+
+.question-text{
+	font-family: 'Georgia', 'Times New Roman', serif;
+	font-size: 3.2rem;
+	line-height: 1.05;
+	text-transform: uppercase;
+	font-weight: 700;
+	color: #fff;
+	text-shadow: 4px 4px 0 rgba(0,0,0,0.6);
+}
+
+.controls{ display:flex; align-items:center; justify-content:center }
+
+@media (max-width: 768px){
+	.question-text{ font-size: 2rem }
+}

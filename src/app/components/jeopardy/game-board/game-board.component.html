@@ -1,0 +1,48 @@
+<div class="jeopardy-board container-fluid py-3">
+  <div class="row mb-3">
+    <div class="col-12 d-flex justify-content-between align-items-center">
+      <div>
+        <h3>Jeopardy</h3>
+      </div>
+      <div class="d-flex gap-3 align-items-center">
+        <div *ngFor="let t of teams" class="card p-2">
+          <div class="fw-bold">{{ t.name }}</div>
+          <div class="h4">${{ t.score }}</div>
+          <div class="d-flex gap-1 mt-2">
+            <button class="btn btn-sm btn-outline-success" (click)="adjust(t.id, 100)">+100</button>
+            <button class="btn btn-sm btn-outline-danger" (click)="adjust(t.id, -100)">-100</button>
+          </div>
+        </div>
+        <div *ngIf="svc.isAllAnswered()" class="ms-3">
+          <button class="btn btn-warning" (click)="goToFinal()">Go to Final Jeopardy</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div *ngIf="game" class="col-12">
+      <div class="table-responsive">
+        <table class="table jeopardy-grid text-center">
+          <thead>
+            <tr>
+              <th *ngFor="let c of game.categories">
+                <div class="cat-title">{{ c.name }}</div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of [0,1,2,3,4]">
+              <td *ngFor="let c of game.categories" (click)="cellClicked(c, c.questions[row])"
+                  [class.disabled]="svc.isAnswered(c.id, c.questions[row].value)"
+                  style="cursor: pointer; vertical-align: middle;">
+                <div *ngIf="!svc.isAnswered(c.id, c.questions[row].value)" class="value">$ {{ c.questions[row].value }}</div>
+                <div *ngIf="svc.isAnswered(c.id, c.questions[row].value)" class="answered">—</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

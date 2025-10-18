@@ -1,0 +1,20 @@
+.jeopardy-screen{
+	background:#0b2d88;
+	min-height: 100vh;
+	width: 100%;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	color:#fff;
+	padding:18px;
+	box-sizing: border-box;
+}
+
+.jeopardy-inner{ max-width: 900px; text-align:center }
+
+.answer-title{ font-family: 'Georgia', 'Times New Roman', serif; font-size:1.6rem; text-transform:uppercase; margin-bottom:8px; text-shadow:2px 2px 0 rgba(0,0,0,0.5) }
+.answer-text{ font-family: 'Georgia', 'Times New Roman', serif; font-size:2.4rem; font-weight:700; text-shadow:4px 4px 0 rgba(0,0,0,0.6); }
+
+@media (max-width: 768px){
+	.answer-text{ font-size:1.6rem }
+}

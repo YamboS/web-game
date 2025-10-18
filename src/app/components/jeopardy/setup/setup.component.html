@@ -1,0 +1,15 @@
+<div class="container py-4">
+  <h2>Jeopardy Setup</h2>
+  <p>Enter two team names and start the game.</p>
+
+  <div class="mb-3">
+    <label class="form-label">Team 1</label>
+    <input [(ngModel)]="team1" class="form-control" placeholder="Team 1" />
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Team 2</label>
+    <input [(ngModel)]="team2" class="form-control" placeholder="Team 2" />
+  </div>
+
+  <button class="btn btn-primary" (click)="startGame()">Start Game</button>
+</div>

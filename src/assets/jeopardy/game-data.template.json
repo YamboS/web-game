@@ -1,0 +1,76 @@
+{
+  "gameTitle": "Sample Game",
+  "categories": [
+    {
+      "id": "cat1",
+      "name": "History",
+      "questions": [
+        { "value": 100, "question": "Who was the first president of the United States?", "answer": "George Washington" },
+        { "value": 200, "question": "What year did WWI begin?", "answer": "1914" },
+        { "value": 300, "question": "Which empire built the Colosseum?", "answer": "Roman Empire" },
+        { "value": 400, "question": "Who discovered the Americas in 1492?", "answer": "Christopher Columbus" },
+        { "value": 500, "question": "What wall fell in 1989?", "answer": "The Berlin Wall" }
+      ]
+    },
+    {
+      "id": "cat2",
+      "name": "Science",
+      "questions": [
+        { "value": 100, "question": "What planet is known as the Red Planet?", "answer": "Mars" },
+        { "value": 200, "question": "What is H2O commonly called?", "answer": "Water" },
+        { "value": 300, "question": "What force keeps us on the ground?", "answer": "Gravity" },
+        { "value": 400, "question": "What is the chemical symbol for gold?", "answer": "Au" },
+        { "value": 500, "question": "What particle has a negative charge?", "answer": "Electron" }
+      ]
+    },
+    {
+      "id": "cat3",
+      "name": "Literature",
+      "questions": [
+        { "value": 100, "question": "Who wrote 'Romeo and Juliet'?", "answer": "William Shakespeare" },
+        { "value": 200, "question": "Author of '1984'", "answer": "George Orwell" },
+        { "value": 300, "question": "Who is the author of 'Pride and Prejudice'?", "answer": "Jane Austen" },
+        { "value": 400, "question": "Author of 'Moby Dick'", "answer": "Herman Melville" },
+        { "value": 500, "question": "Who wrote 'Ulysses'?", "answer": "James Joyce" }
+      ]
+    },
+    {
+      "id": "cat4",
+      "name": "Geography",
+      "questions": [
+        { "value": 100, "question": "What is the largest continent?", "answer": "Asia" },
+        { "value": 200, "question": "What country has the Eiffel Tower?", "answer": "France" },
+        { "value": 300, "question": "Capital of Japan?", "answer": "Tokyo" },
+        { "value": 400, "question": "Longest river in the world?", "answer": "Nile" },
+        { "value": 500, "question": "Highest mountain on Earth?", "answer": "Mount Everest" }
+      ]
+    },
+    {
+      "id": "cat5",
+      "name": "Pop Culture",
+      "questions": [
+        { "value": 100, "question": "Who sang 'Thriller'?", "answer": "Michael Jackson" },
+        { "value": 200, "question": "What platform hosts short looping videos called 'TikTok'?", "answer": "TikTok" },
+        { "value": 300, "question": "Which movie features the character 'Darth Vader'?", "answer": "Star Wars" },
+        { "value": 400, "question": "Who played Jack in 'Titanic'?", "answer": "Leonardo DiCaprio" },
+        { "value": 500, "question": "Who is known as the 'King of Pop'?", "answer": "Michael Jackson" }
+      ]
+    },
+    {
+      "id": "cat6",
+      "name": "Sports",
+      "questions": [
+        { "value": 100, "question": "How many players are on a basketball team on the court?", "answer": "5" },
+        { "value": 200, "question": "Which sport uses a shuttlecock?", "answer": "Badminton" },
+        { "value": 300, "question": "How many holes are on a standard golf course?", "answer": "18" },
+        { "value": 400, "question": "How many minutes are in a soccer match (regulation)?", "answer": "90" },
+        { "value": 500, "question": "Who has won the most Grand Slam tennis titles?", "answer": "(varies)" }
+      ]
+    }
+  ]
+  ,
+  "finalJeopardy": {
+    "question": "This disturbing British anthology's title comes from what your TV screen resembles when it's turned off.",
+    "answer": "The title is 'The Turning Off' (placeholder)."
+  }
+}

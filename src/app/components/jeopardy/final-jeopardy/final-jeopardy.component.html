@@ -1,0 +1,31 @@
+<div class="final-screen">
+  <div class="final-inner">
+    <h2 class="mb-3">Final Jeopardy</h2>
+
+    <div class="question-box mb-4">{{ finalQuestion }}</div>
+
+    <div class="wagers mb-4 row">
+      <div class="col-md-6" *ngFor="let t of teams">
+        <div class="card p-3 mb-2">
+          <div class="fw-bold">{{ t.name }} (Score: ${{ t.score }})</div>
+          <div class="mt-2">
+            <label>Wager</label>
+            <input type="number" class="form-control" [(ngModel)]="wagers[t.id]" />
+          </div>
+
+          <div class="mt-2">
+            <button class="btn btn-success me-2" (click)="applyResult(t.id, true)" [disabled]="!answerRevealed">Mark Correct</button>
+            <button class="btn btn-danger" (click)="applyResult(t.id, false)" [disabled]="!answerRevealed">Mark Incorrect</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <button class="btn btn-primary me-2" (click)="reveal()">Reveal Answer</button>
+      <button class="btn btn-secondary" (click)="returnToBoard()">Return to Board</button>
+    </div>
+
+    <div *ngIf="answerRevealed" class="answer-box mt-3 p-3">{{ finalAnswer }}</div>
+  </div>
+</div>
