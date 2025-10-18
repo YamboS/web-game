@@ -12,6 +12,20 @@
   </div>
 </div>
 
+<!-- Game Over screen - white background with monologue replay -->
+<div class="game-over-screen" *ngIf="isGameOver && showMonologue" @fade>
+  <div class="game-over-inner row mb-3 text-center">
+    <div class="col-4"></div>
+    <div class="col-4">
+      <p class="overlay-text">{{ dialog }}</p>
+      <div class="mt-3" *ngIf="isExitDialogActive && pageIndex === (exitTextList.length - 1)">
+        <a class="btn btn-primary" routerLink="/jeopardy/setup">Continue to Jeopardy Setup</a>
+      </div>
+    </div>
+    <div class="col-4"></div>
+  </div>
+</div>
+
 <!-- Intro monologue -->
 <div *ngIf="showMonologue" class=" main-office-area row mb-3 text-center" (keydown.enter)="nextPage()">
   <div class="col-4 themed-grid-col"></div>
@@ -229,6 +243,20 @@
           </div>
         </section>
 
+           <!-- Password input screen -->
+        <section *ngSwitchCase="'keypad'">
+          <div class="modal-header">
+            <h5 class="modal-title">{{modalHeader}}</h5>
+          </div>
+          <div class="modal-body">
+            {{modalBody}}
+          </div>
+          <div *ngIf="showInput" class="modal-footer p-3">
+            <input type="text" [(ngModel)]="userInput" placeholder="Enter door code here" class="form-control"/>
+            <button class="btn btn-primary mt-2" (click)="submitPassword()">Submit</button>
+          </div>
+        </section>
+
         <!-- Special confidential message screen -->
         <section *ngSwitchCase="'special'">
           <div class="modal-header">
@@ -273,6 +301,23 @@
             </ul>
           </div>
           <div class="modal-footer">
+            <button class="btn btn-secondary" (click)="closeModal()">Close</button>
+          </div>
+        </section>
+
+        <!-- Calendar puzzle screen -->
+        <section *ngSwitchCase="'calendar'">
+          <div class="modal-header">
+            <h5 class="modal-title">{{modalHeader}}</h5>
+          </div>
+          <div class="modal-body">
+            <p>{{modalBody}}</p>
+            <ul>
+              <li *ngFor="let meeting of modalList">{{meeting}}</li>
+            </ul>
+            <p><em>There is a handwritten note: "Always focus on the project."</em></p>
+          </div>
+          <div class="modal-footer d-flex gap-2">
             <button class="btn btn-secondary" (click)="closeModal()">Close</button>
           </div>
         </section>

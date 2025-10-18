@@ -43,6 +43,15 @@ export class LandingPageComponent implements OnInit, OnDestroy {
     "It's time to escape!",
   ];
 
+  exitTextList: string[] = [
+    'You made it out!',
+    'Freedom at last.',
+    'The corporate nightmare is over.',
+    "Time to celebrate your escape!",
+  ];
+  
+  isExitDialogActive: boolean = false;
+
   showInput = true;
   showCharacterIntroductions = false;
   showMonologue = false;
@@ -56,6 +65,7 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   showSpecialMessage=false;
   turnOffNextPage: boolean = false;
   modalList: string[] = []    
+  isGameOver: boolean = false;
 
   private roomDescriptions: Record<string, string> = {
     base: "You're in the main office area.",
@@ -98,6 +108,14 @@ export class LandingPageComponent implements OnInit, OnDestroy {
         this.showModal = true;
         this.showInput = true;    
         break;
+      case 'keypad':
+        // In the janitor closet the computer prompts for a password        
+        this.modalScreen = 'keypad';
+        this.modalHeader = 'Escape Door Password Required';
+        this.modalBody = 'Enter the escape door password to get out.';
+        this.showModal = true;
+        this.showInput = true;    
+        break;
       case 'vending_machine':
         this.modalScreen = 'list';
         this.modalHeader = 'Vending Machine';
@@ -123,8 +141,25 @@ export class LandingPageComponent implements OnInit, OnDestroy {
         + " Sure some of them are good but who wants boring snacks with nuts or raisins? In an office!?!?!?!? It's boring enough here.";
         this.showModal = true;
         break;
+      case 'calendar':
+        // Open calendar modal with meeting data
+        this.modalScreen = 'calendar';
+        this.modalHeader = "Manager's Calendar";
+        // Provide modalBody as a short instruction/prompt
+        this.modalBody = 'Several meetings are scheduled this month. Identify the project-related meetings to extract room numbers.';
+        // Meetings data used by the calendar modal
+        this.modalList = [
+          'Oct 4: Team Check-in (Room 12)',
+          'Oct 12: Project Review (Room 48)',
+          'Oct 17: Team Check-in (Room 51)',
+          'Oct 23: Project Review (Room 47)',
+          'Oct 28: Team Check-in (Room 56)'
+        ];
+        this.showModal = true;
+        break;
       default:
         // Fallback: open modal with filler text for any unhandled area
+        console.log(areaId)
         this.modalScreen = 'default';
         this.modalHeader = area.title || 'Area';
         this.modalBody = area.description || 'Nothing special here yet.';
@@ -152,16 +187,29 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   }
 
   nextPage(): void {
-    if (this.pageIndex < this.textList.length - 1) {
-      this.pageIndex++;
-      this.dialog = this.textList[this.pageIndex];
-    } else if (this.turnOffNextPage) {
-      return;
+    if (this.isExitDialogActive) {
+      // Handle exit dialog advancement (single run only)
+      if (this.pageIndex < this.exitTextList.length - 1) {
+        // advance until the last exit line
+        this.pageIndex++;
+        this.dialog = this.exitTextList[this.pageIndex];
+      } else {
+        // Reached the end of exit dialog; do not advance further
+        return;
+      }
     } else {
-      this.dialog = '';
-      this.showMonologue = false;
-      this.currentRoom = 'base';
-      this.turnOffNextPage = true;
+      // Handle normal game dialog advancement
+      if (this.pageIndex < this.textList.length - 1) {
+        this.pageIndex++;
+        this.dialog = this.textList[this.pageIndex];
+      } else if (this.turnOffNextPage) {
+        return;
+      } else {
+        this.dialog = '';
+        this.showMonologue = false;
+        this.currentRoom = 'base';
+        this.turnOffNextPage = true;
+      }
     }
   }
 
@@ -182,10 +230,20 @@ export class LandingPageComponent implements OnInit, OnDestroy {
       this.modalBody =
       "Cleaning schedule started. All the other doors in the building are now unlocked.";
       this.showInput = false;
-
       this.breakroomUnlocked = true;
       this.officeroomUnlocked = true;
-    } else {
+    } 
+    else if(this.userInput.toLowerCase() === '231248'){
+      this.modalHeader = "Escape Door Unlocked";
+      this.modalBody = "You have entered the correct password. The door is now unlocked.";
+      this.showInput = false;
+      this.closeModal();
+      setTimeout(() => {
+        this.gameOver();
+      }, 500);
+    }
+    
+    else {
       this.modalHeader = 'Incorrect password. Try again.';
     }
   }
@@ -195,5 +253,20 @@ export class LandingPageComponent implements OnInit, OnDestroy {
     this.userInput = '';
     this.modalScreen = 'default';
     this.modalImage = undefined;
+  }
+
+  gameOver(): void {
+    // Set game over state
+    this.isGameOver = true;
+    // Hide all game areas and show monologue on white background
+    this.currentRoom = 'landing';
+    this.onLandingPage = false;
+    this.showMonologue = true;
+    // Switch to exit dialog
+    this.isExitDialogActive = true;
+    // Reset dialog display
+    this.pageIndex = 0;
+    this.dialog = this.exitTextList[0];
+    this.turnOffNextPage = false;
   }
 }

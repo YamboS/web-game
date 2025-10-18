@@ -221,3 +221,31 @@
     justify-content: end;
     display: flex;
 }
+
+/* Game Over Screen - white background with monologue */
+.game-over-screen {
+  position: fixed;
+  inset: 0; /* full-bleed container */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  z-index: 5000;
+}
+
+.game-over-inner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  color: black;
+}
+
+.game-over-inner .overlay-text {
+  margin-top: 0;
+  color: #000;
+  text-shadow: none;
+  font-size: 1.5rem;
+}
+
