@@ -66,6 +66,7 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   turnOffNextPage: boolean = false;
   modalList: string[] = [];
   isGameOver: boolean = false;
+  janitorComputerUnlocked: boolean = false;
 
   private roomDescriptions: Record<string, string> = {
     base: "You're in the main office area.",
@@ -102,12 +103,18 @@ export class LandingPageComponent implements OnInit, OnDestroy {
       switch (areaId) {
         case 'computer':
           // In the janitor closet the computer prompts for a password
+          if(!this.janitorComputerUnlocked){
           this.modalScreen = 'password';
           this.modalHeader = 'Computer Password Required';
-          this.modalBody =
-            'The computer is asking for an password, the hint says my favorite place in the office.';
+          this.modalBody = 'The computer is asking for an password, the hint says my favorite place in the office.';
           this.showModal = true;
-          this.showInput = true;
+          this.showInput = true;}
+          else{
+          this.modalScreen = 'password';
+          this.modalHeader = 'Welcome Janitor';
+          this.modalBody = 'Cleaning schedule started. All the other doors in the building are now unlocked.';
+          this.showModal = true;
+          }
           break;
         case 'keypad':
           // In the janitor closet the computer prompts for a password
@@ -148,8 +155,10 @@ export class LandingPageComponent implements OnInit, OnDestroy {
           // Open calendar modal with meeting data
           this.modalScreen = 'calendar';
           this.modalHeader = "Manager's Calendar";
+          
           // Provide modalBody as a short instruction/prompt
           this.modalBody = 'Several meetings are scheduled this month.';
+          
           // Meetings data used by the calendar modal
           this.modalList = [
             'Oct 4: Team Check-in (Room 12)',
@@ -164,8 +173,7 @@ export class LandingPageComponent implements OnInit, OnDestroy {
           // Fallback: open modal with filler text for any unhandled area
           this.modalScreen = 'default';
           this.modalHeader = area.title || 'Area';
-          this.modalBody = area.description || 'Nothing special here yet.';
-          //this.showModal = true;
+          this.modalBody = area.description || 'Nothing special here yet.';          
           break;
       }
     }
@@ -237,6 +245,7 @@ export class LandingPageComponent implements OnInit, OnDestroy {
       this.showInput = false;
       this.breakroomUnlocked = true;
       this.officeroomUnlocked = true;
+      this.janitorComputerUnlocked = true;
     } else if (
       this.userInput.toLowerCase() === '254732' ||
       this.userInput.toLowerCase() === '23-47-32'
