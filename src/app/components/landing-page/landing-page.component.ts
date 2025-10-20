@@ -35,11 +35,10 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   pageIndex = 0;
   dialog: string = '';
   textList: string[] = [
-    "You're an employee at FORDD",
+    "You're an employee at FORDD...",
     'Your manager, Fim Jarley, has locked you in the office ' +
-      'because the vehicle launch was a complete disaster',
-    "and you're not leaving till it's fixed",
-    'but you have other plans',
+    "because the vehicle launch was a complete disaster.",
+    "He says you're not leaving till it's fixed...",    
     "It's time to escape!",
   ];
 
@@ -106,7 +105,7 @@ export class LandingPageComponent implements OnInit, OnDestroy {
           if(!this.janitorComputerUnlocked){
           this.modalScreen = 'password';
           this.modalHeader = 'Computer Password Required';
-          this.modalBody = 'The computer is asking for an password, the hint says my favorite place in the office.';
+          this.modalBody = 'The computer is asking for an password.';
           this.showModal = true;
           this.showInput = true;}
           else{
