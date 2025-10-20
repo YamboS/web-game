@@ -14,7 +14,7 @@ export class TimerComponent {
   start() {
     if (this.running) return;
     this.running = true;
-    this.remaining = 40;
+    this.remaining = 30;
     this.interval = setInterval(() => {
       this.remaining -= 1;
       if (this.remaining <= 0) {
@@ -34,6 +34,6 @@ export class TimerComponent {
 
   reset() {
     this.stop();
-    this.remaining = 40;
+    this.remaining = 30;
   }
 }
