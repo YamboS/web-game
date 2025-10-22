@@ -3,12 +3,14 @@
   <div class="hero">
     <div class="hero-inner">
       <h1>Office Escape Room</h1>
-      <p class="lead">Escape this corporate nightmare.</p>
+      <p class="lead">Escape this corporate nightmare.<br>
+      A work of fiction.
+      </p>       
       <div class="hero-actions">
         <button type="button" class="btn btn-primary btn-lg px-4 gap-3" (click)="startGame()">
           Start the path to freedom!
         </button>
-      </div>
+      </div>      
     </div>
   </div>
 </div>
@@ -28,7 +30,7 @@
 </div>
 
 <!-- Intro monologue -->
-<div *ngIf="showMonologue" class=" main-office-area row mb-3 text-center" (keydown.enter)="nextPage()">
+<div *ngIf="showMonologue" class=" main-office-area row mb-3 text-center">
   <div class="col-4 themed-grid-col"></div>
   <div class="col-4 themed-grid-col">
     <p class="overlay-text">{{ dialog }}</p>
@@ -102,7 +104,7 @@
     </g>
     <!-- Calendar area -->
     <g style="pointer-events:all; cursor:pointer;" (click)="onAreaClick('calendar', $event)">
-      <circle cx="67.5%" cy="62%" r="4.2%" style="fill:transparent; stroke:none;"
+      <circle cx="63.5%" cy="62%" r="5.2%" style="fill:transparent; stroke:none;"
         [class.highlight]="hoveredArea === 'calendar'" (mouseenter)="hoveredArea = 'calendar'"
         (mouseleave)="hoveredArea = null">
       </circle>
@@ -261,9 +263,9 @@
           Here are the locations of the 3 clues (without giving too much away) for that password in-case I forget since
           the password can't be reset:
           <ul>
-            <li>The first set of numbers can be found in the break room (fav snack)</li>
-            <li>The second set are in my office</li>
-            <li>The last set is in the Janitor's closet</li>
+            <li class="my-1">The first set of numbers can be found in the break room.</li>
+            <li class="my-1">The second set are in my office.</li>            
+            <li class="my-1">The last set is in the Janitor's closet</li>
           </ul>
           <p>Let's not lock ourselves in again, Good Luck Me</p>      
         </div>
@@ -310,8 +312,7 @@
           <p>{{modalBody}}</p>
           <ul>
             <li *ngFor="let meeting of modalList">{{meeting}}</li>
-          </ul>
-          <p><em>There is a handwritten note: "Always focus on the project."</em></p>
+          </ul>          
         </div>
         <div class="modal-footer d-flex gap-2">
           <button class="btn btn-secondary" (click)="closeModal()">Close</button>

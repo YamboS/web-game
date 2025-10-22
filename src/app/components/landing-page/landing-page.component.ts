@@ -35,7 +35,8 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   pageIndex = 0;
   dialog: string = '';
   textList: string[] = [
-    "You're an employee at FORDD...",
+    "You're an employee at F.O.R.D.D ...",
+    "Short for 'Fix Or Repair Daily Driver'.",
     'Your manager, Fim Jarley, has locked you in the office ' +
     "because the vehicle launch was a complete disaster.",
     "He says you're not leaving till it's fixed...",    
@@ -74,12 +75,27 @@ export class LandingPageComponent implements OnInit, OnDestroy {
     janitor_closet: "You're in the janitor's closet. Look around for clues.",
   };
 
-  // Listen for Enter key to progress dialogue
-
+  // Listen for Enter key to progress dialogue or submit modal input
   @HostListener('document:keydown.enter', ['$event'])
   handleEnterKey(event: KeyboardEvent) {
-    if (!this.onLandingPage) {
+    // If modal is open with input, submit it
+    if (this.showModal && this.showInput) {
+      event.preventDefault();
+      this.submitPassword();
+      return;
+    }
+    // If not on landing page and no modal, progress dialogue
+    if (!this.onLandingPage && !this.showModal) {
       this.nextPage();
+    }
+  }
+
+  // Listen for Escape key to close modal
+  @HostListener('document:keydown.escape', ['$event'])
+  handleEscapeKey(event: KeyboardEvent) {
+    if (this.showModal) {
+      event.preventDefault();
+      this.closeModal();
     }
   }
 
@@ -146,8 +162,8 @@ export class LandingPageComponent implements OnInit, OnDestroy {
           this.modalScreen = 'clue';
           this.modalHeader = 'To:Vending Machine Supplier';
           this.modalBody =
-            'Tell Frank or whatever his name is to stop filling the machine with such god awful snacks.' +
-            " Sure some of them are good but who wants boring snacks with nuts or raisins? In an office!?!?!?!? It's boring enough here.";
+            'TELL FRANK OR WHATEVER his name is to STOP filling the machine with such GOD awful snacks.' +
+            " Sure some of them are AVERAGE at BEST but who wants BORING snacks with nuts or raisins? IN AN OFFICE!?!?!?!? It's boring enough here.";
           this.showModal = true;
           break;
         case 'calendar':
@@ -160,11 +176,11 @@ export class LandingPageComponent implements OnInit, OnDestroy {
           
           // Meetings data used by the calendar modal
           this.modalList = [
-            'Oct 4: Team Check-in (Room 12)',
-            'Oct 12: Project Review (Room 47)',
-            'Oct 20: Team Check-in (Room 51)',
-            'Oct 25: Project Review (Room 41)',
-            'Oct 30: Team Check-in (Room 57)',
+            'Oct 3: Team Yoga',
+            'Oct 10: Project Review',
+            'Oct 16: Team Outing',
+            'Oct 24: Project Review',
+            'Oct 31: Team Check-in',
           ];
           this.showModal = true;
           break;
@@ -246,8 +262,8 @@ export class LandingPageComponent implements OnInit, OnDestroy {
       this.officeroomUnlocked = true;
       this.janitorComputerUnlocked = true;
     } else if (
-      this.userInput.toLowerCase() === '254732' ||
-      this.userInput.toLowerCase() === '23-47-32'
+      this.userInput.toLowerCase() === '274732' ||
+      this.userInput.toLowerCase() === '27-47-32'
     ) {
       this.modalHeader = 'Escape Door Unlocked';
       this.modalBody =

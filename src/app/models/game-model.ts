@@ -16,12 +16,12 @@ export class GameArea {
     },
     calendar: {
       title: "Desk Calendar",
-      description: "A calendar with several dates circled in red. Something important was planned."
+      description: "A calendar with five dates circled in red."
     },
     // Lunch Room Areas
     lunch_table: {
       title: "Lunch Table",
-      description: "Several empty coffee cups and half-eaten snacks are scattered on the table. Someone left in a hurry."
+      description: "Several half-eaten snacks are scattered on the table."
     },
     vending_machine: {
       title: "Vending Machine",
