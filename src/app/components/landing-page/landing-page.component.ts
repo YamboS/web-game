@@ -262,8 +262,8 @@ export class LandingPageComponent implements OnInit, OnDestroy {
       this.officeroomUnlocked = true;
       this.janitorComputerUnlocked = true;
     } else if (
-      this.userInput.toLowerCase() === '274732' ||
-      this.userInput.toLowerCase() === '27-47-32'
+      this.userInput.toLowerCase() === '271632' ||
+      this.userInput.toLowerCase() === '27-16-32'
     ) {
       this.modalHeader = 'Escape Door Unlocked';
       this.modalBody =
