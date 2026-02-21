@@ -249,6 +249,16 @@ export class LandingPageComponent implements OnInit, OnDestroy {
     this.currentAreaText = 'You are at the final door. Try to open it.';
   }
 
+  addDigit(digit: string): void {
+    if (this.userInput.length < 6) {
+      this.userInput += digit;
+    }
+  }
+
+  removeLastDigit(): void {
+    this.userInput = this.userInput.slice(0, -1);
+  }
+
   submitPassword(): void {
     if (
       this.userInput.toLowerCase() === 'break room' ||
@@ -269,12 +279,14 @@ export class LandingPageComponent implements OnInit, OnDestroy {
       this.modalBody =
         'You have entered the correct password. The door is now unlocked.';
       this.showInput = false;
-      this.closeModal();
+      this.showModal = false;
+      this.userInput = '';
       setTimeout(() => {
         this.gameOver();
       }, 500);
     } else {
       this.modalHeader = 'Incorrect password. Try again.';
+      this.userInput = '';
     }
   }
 

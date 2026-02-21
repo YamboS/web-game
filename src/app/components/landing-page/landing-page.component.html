@@ -222,7 +222,7 @@
       </section>
 
       <!-- Password input screen -->
-      <section *ngSwitchCase="'password'">
+      <section *ngSwitchCase="'password'" style="font-family: monospace;">
         <div class="modal-header">
           <h5 class="modal-title">{{modalHeader}}</h5>
         </div>
@@ -236,7 +236,7 @@
         </div>
       </section>
 
-      <!-- Password input screen -->
+      <!-- Keypad input screen -->
       <section *ngSwitchCase="'keypad'">
         <div class="modal-header">
           <h5 class="modal-title">{{modalHeader}}</h5>
@@ -245,9 +245,23 @@
           {{modalBody}}
         </div>
         <div *ngIf="showInput" class="modal-footer p-3">
-          <input maxlength="6" type="text" [(ngModel)]="userInput" placeholder="Enter door code here"
-            class="form-control" />
-          <button class="btn btn-primary mt-2" (click)="submitPassword()">Submit</button>
+          <div class="keypad-display mb-3">
+            <div class="display-value">{{ userInput || '•••••' }}</div>
+          </div>
+          <div class="keypad-grid">
+            <button (click)="addDigit('1')" class="btn btn-outline-secondary keypad-btn">1</button>
+            <button (click)="addDigit('2')" class="btn btn-outline-secondary keypad-btn">2</button>
+            <button (click)="addDigit('3')" class="btn btn-outline-secondary keypad-btn">3</button>
+            <button (click)="addDigit('4')" class="btn btn-outline-secondary keypad-btn">4</button>
+            <button (click)="addDigit('5')" class="btn btn-outline-secondary keypad-btn">5</button>
+            <button (click)="addDigit('6')" class="btn btn-outline-secondary keypad-btn">6</button>
+            <button (click)="addDigit('7')" class="btn btn-outline-secondary keypad-btn">7</button>
+            <button (click)="addDigit('8')" class="btn btn-outline-secondary keypad-btn">8</button>
+            <button (click)="addDigit('9')" class="btn btn-outline-secondary keypad-btn">9</button>
+            <button (click)="removeLastDigit()" class="btn btn-outline-danger keypad-btn">✕</button>
+            <button (click)="addDigit('0')" class="btn btn-outline-secondary keypad-btn">0</button>
+            <button (click)="submitPassword()" class="btn btn-primary keypad-btn keypad-submit mb-5">Submit</button>
+          </div>
         </div>
       </section>
 
