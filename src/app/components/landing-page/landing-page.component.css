@@ -231,7 +231,7 @@
 }
 
 .exit-icon{
-    justify-content: end;
+  justify-content: flex-end;
     display: flex;
 }
 

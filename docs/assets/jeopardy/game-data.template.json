@@ -1,76 +1,75 @@
 {
-  "gameTitle": "Sample Game",
+  "gameTitle": "Ultimate Trivia Showdown",
   "categories": [
     {
       "id": "cat1",
       "name": "History",
       "questions": [
-        { "value": 100, "question": "Who was the first president of the United States?", "answer": "George Washington" },
-        { "value": 200, "question": "What year did WWI begin?", "answer": "1914" },
-        { "value": 300, "question": "Which empire built the Colosseum?", "answer": "Roman Empire" },
-        { "value": 400, "question": "Who discovered the Americas in 1492?", "answer": "Christopher Columbus" },
-        { "value": 500, "question": "What wall fell in 1989?", "answer": "The Berlin Wall" }
+        { "value": 100, "question": "What ancient city was buried by the eruption of Mount Vesuvius in 79 AD?", "answer": "Pompeii" },
+        { "value": 200, "question": "Which Egyptian pharaoh's nearly intact tomb was discovered in 1922 by archaeologist Howard Carter?", "answer": "Tutankhamun or King Tut" },
+        { "value": 300, "question": "The Rosetta Stone was the key to deciphering which ancient writing system?", "answer": "Egyptian hieroglyphics" },
+        { "value": 400, "question": "In 1961, cosmonaut Yuri Gagarin became the first human in space aboard this spacecraft.", "answer": "Vostok 1" },
+        { "value": 500, "question": "The eau de cologne originated in the 18th century in which German city?", "answer": "Cologne (Köln), Germany" }
       ]
     },
     {
       "id": "cat2",
       "name": "Science",
       "questions": [
-        { "value": 100, "question": "What planet is known as the Red Planet?", "answer": "Mars" },
-        { "value": 200, "question": "What is H2O commonly called?", "answer": "Water" },
-        { "value": 300, "question": "What force keeps us on the ground?", "answer": "Gravity" },
-        { "value": 400, "question": "What is the chemical symbol for gold?", "answer": "Au" },
-        { "value": 500, "question": "What particle has a negative charge?", "answer": "Electron" }
+        { "value": 100, "question": "What is the only metal that is liquid at standard room temperature?", "answer": "Mercury" },
+        { "value": 200, "question": "Light takes approximately 8 minutes to travel from the Sun to Earth. About how far is that in miles?", "answer": "93 million miles" },
+        { "value": 300, "question": "In the famous thought experiment 'Schrödinger's cat', the cat is described as being in a superposition of which two states?", "answer": "Alive and dead" },
+        { "value": 400, "question": "What phenomenon causes a neutron star to spin hundreds of times per second, emitting beams of radiation?", "answer": "A pulsar" },
+        { "value": 500, "question": "In quantum mechanics, this principle states you cannot simultaneously know the exact position and momentum of a particle.", "answer": "Heisenberg's Uncertainty Principle" }
       ]
     },
     {
       "id": "cat3",
-      "name": "Literature",
+      "name": "Food & Drink",
       "questions": [
-        { "value": 100, "question": "Who wrote 'Romeo and Juliet'?", "answer": "William Shakespeare" },
-        { "value": 200, "question": "Author of '1984'", "answer": "George Orwell" },
-        { "value": 300, "question": "Who is the author of 'Pride and Prejudice'?", "answer": "Jane Austen" },
-        { "value": 400, "question": "Author of 'Moby Dick'", "answer": "Herman Melville" },
-        { "value": 500, "question": "Who wrote 'Ulysses'?", "answer": "James Joyce" }
+        { "value": 100, "question": "What spice, derived from the crocus flower, is the most expensive in the world by weight?", "answer": "Saffron" },
+        { "value": 200, "question": "Which U.S. state produces the most pistachios?", "answer": "California" },
+        { "value": 300, "question": "What fruit is used to make traditional Italian limoncello liqueur?", "answer": "Lemons" },
+        { "value": 400, "question": "In which country was Hawaiian pizza(gross) actually invented?", "answer": "Canada" },
+        { "value": 500, "question": "The high-end high cuisine technique 'sous vide' involves cooking food sealed in bags submerged in water at what kind of temperature?", "answer": "Precisely controlled low temperature" }
       ]
     },
     {
       "id": "cat4",
-      "name": "Geography",
+      "name": "World Records & Extremes",
       "questions": [
-        { "value": 100, "question": "What is the largest continent?", "answer": "Asia" },
-        { "value": 200, "question": "What country has the Eiffel Tower?", "answer": "France" },
-        { "value": 300, "question": "Capital of Japan?", "answer": "Tokyo" },
-        { "value": 400, "question": "Longest river in the world?", "answer": "Nile" },
-        { "value": 500, "question": "Highest mountain on Earth?", "answer": "Mount Everest" }
+        { "value": 100, "question": "What is the smallest country in the world by area?", "answer": "Vatican City" },
+        { "value": 200, "question": "The Mariana Trench, the deepest point in the ocean, is located in which ocean?", "answer": "Pacific Ocean" },
+        { "value": 300, "question": "This African lake is the world's second largest freshwater lake by surface area and was named after a British queen.", "answer": "Lake Victoria" },
+        { "value": 400, "question": "At over 6,600 km, what is the longest wall ever built?", "answer": "The Great Wall of China" },
+        { "value": 500, "question": "The hottest temperature ever reliably recorded on Earth was 134°F (56.7°C) in 1913 at this location.", "answer": "Death Valley, California (Furnace Creek)" }
       ]
     },
     {
       "id": "cat5",
-      "name": "Pop Culture",
+      "name": "Austin, Texas",
       "questions": [
-        { "value": 100, "question": "Who sang 'Thriller'?", "answer": "Michael Jackson" },
-        { "value": 200, "question": "What platform hosts short looping videos called 'TikTok'?", "answer": "TikTok" },
-        { "value": 300, "question": "Which movie features the character 'Darth Vader'?", "answer": "Star Wars" },
-        { "value": 400, "question": "Who played Jack in 'Titanic'?", "answer": "Leonardo DiCaprio" },
-        { "value": 500, "question": "Who is known as the 'King of Pop'?", "answer": "Michael Jackson" }
+        { "value": 100, "question": "What nickname does Austin claim due to its many music venues and festivals?", "answer": "The Live Music Capital of the World" },
+        { "value": 200, "question": "What river flows through Austin and forms Lady Bird Lake?", "answer": "The Colorado River" },
+        { "value": 300, "question": "In what decade did the annual mishmash of film, media, and music known as South by Southwest (SXSW) first begin in Austin? The festival has remained in the Texas capital since it launched.", "answer": "1980s"},
+        { "value": 400, "question": "Although it closed in 2015, what actress who starred in films including 'The Proposal','Two Weeks Notice,' and 'The Blind Side' opened her own restaurant called what?", "answer": "Bess Bistro" },
+        { "value": 500, "question": "Each summer evening, thousands of what animals emerge from under the Congress Avenue Bridge, drawing large crowds?", "answer": "Mexican free-tailed bats" }
       ]
     },
     {
       "id": "cat6",
-      "name": "Sports",
+      "name": "Music Through the Ages",
       "questions": [
-        { "value": 100, "question": "How many players are on a basketball team on the court?", "answer": "5" },
-        { "value": 200, "question": "Which sport uses a shuttlecock?", "answer": "Badminton" },
-        { "value": 300, "question": "How many holes are on a standard golf course?", "answer": "18" },
-        { "value": 400, "question": "How many minutes are in a soccer match (regulation)?", "answer": "90" },
-        { "value": 500, "question": "Who has won the most Grand Slam tennis titles?", "answer": "(varies)" }
+        { "value": 100, "question": "Which classical composer continued to write music even after going completely deaf?", "answer": "Ludwig van Beethoven" },
+        { "value": 200, "question": "Which Linkin Park album, released in 2000, features the songs 'In the End' and 'Crawling'?", "answer": "Hybrid Theory" },
+        { "value": 300, "question": "Which English-Nigerian singer released the 1984 album 'Diamond Life' featuring the hit 'Smooth Operator'?", "answer": "Sade" },
+        { "value": 400, "question": "Before fame, this legendary guitarist was booed off stage at the Apollo Theater's Amateur Night in 1963.", "answer": "Jimi Hendrix" },
+        { "value": 500, "question": "The musical term 'fortissimo' instructs a musician to play in what manner?", "answer": "Very loudly" }
       ]
     }
-  ]
-  ,
+  ],
   "finalJeopardy": {
-    "question": "This disturbing British anthology's title comes from what your TV screen resembles when it's turned off.",
-    "answer": "The title is 'The Turning Off' (placeholder)."
+    "question": "This creature is the only animal known to be biologically immortal — it can revert its cells back to their earliest form and start its life cycle over.",
+    "answer": "The immortal jellyfish (Turritopsis dohrnii)"
   }
 }
